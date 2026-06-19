@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MG ÖV 2026">
+<meta name="theme-color" content="#0f172a">
+<link rel="manifest" href='data:application/manifest+json,{"name":"Martin Gerber ÖV Arbeitszeit 2026","short_name":"MG ÖV 2026","start_url":".","display":"standalone","background_color":"#f5f7fb","theme_color":"#0f172a"}'>
+
+<title>Martin Gerber – ÖV Arbeitszeit-, Dienst- und Spesenplanung</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#162033;--muted:#64748b;--line:#d8e0ee;--accent:#1d4ed8;--danger:#b91c1c;--ok:#047857;--sat:#fff7ed;--sun:#fef2f2}
+*{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+header{background:#0f172a;color:white;padding:18px 22px} header h1{margin:0;font-size:22px} header p{margin:6px 0 0;color:#cbd5e1}
+main{padding:18px;max-width:1500px;margin:auto}.grid{display:grid;grid-template-columns:360px 1fr;gap:16px}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 3px #0001;padding:14px;margin-bottom:16px}.card h2{font-size:18px;margin:0 0 12px}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0}label{font-size:13px;color:var(--muted)}input,select,button{font:inherit;border:1px solid var(--line);border-radius:9px;padding:8px;background:white}input[type=number]{width:92px}input[type=time]{width:118px}button{cursor:pointer;background:#eef4ff}button.primary{background:var(--accent);color:white;border-color:var(--accent)}button.danger{background:#fee2e2;color:var(--danger)}button.small{font-size:12px;padding:5px 7px}.tabs button{border-radius:999px}.tabs .active{background:var(--accent);color:white}.summary{display:grid;grid-template-columns:repeat(4,minmax(130px,1fr));gap:10px}.metric{background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:10px}.metric b{display:block;font-size:20px;margin-top:3px}.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}.dow{font-weight:bold;text-align:center;color:var(--muted);font-size:13px}.day{min-height:112px;border:1px solid var(--line);border-radius:10px;background:white;padding:7px}.day.sat{background:var(--sat)}.day.sun{background:var(--sun)}.day.empty{background:transparent;border:0}.date{font-weight:bold;font-size:13px}.assignment{margin-top:7px;font-size:12px}.assignment select{width:100%;font-size:12px;padding:5px}.calc{margin-top:5px;color:var(--muted);line-height:1.35}.calc strong{color:var(--text)}table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px solid var(--line);padding:7px;text-align:left}th{color:var(--muted);font-weight:bold}.scroll{max-height:440px;overflow:auto}.note{font-size:13px;color:var(--muted);line-height:1.4}.pill{display:inline-block;border-radius:999px;background:#e0e7ff;color:#1e3a8a;padding:2px 7px;font-size:12px}.ok{color:var(--ok)}.bad{color:var(--danger)}.hidden{display:none}.change-box{background:#fff7ed;border:1px solid #fed7aa;border-radius:9px;padding:6px;margin-top:6px;font-size:12px}.azg-red{border:2px solid #b91c1c!important;background:#fee2e2!important}.azg-orange{border:2px solid #f97316!important;background:#ffedd5!important}.azg-box{margin-top:6px;border-radius:9px;padding:6px;font-size:12px}.azg-box.red{background:#fee2e2;color:#7f1d1d;border:1px solid #fecaca}.azg-box.orange{background:#ffedd5;color:#7c2d12;border:1px solid #fed7aa}.legend{display:flex;gap:8px;flex-wrap:wrap}.legend span{border-radius:999px;padding:3px 8px;font-size:12px;border:1px solid var(--line)}.modal{position:fixed;inset:0;background:#0006;display:none;align-items:center;justify-content:center;z-index:10}.modal.open{display:flex}.modal-card{background:white;border-radius:14px;border:1px solid var(--line);padding:16px;max-width:560px;width:calc(100% - 30px);box-shadow:0 10px 30px #0004}.modal-card h2{margin-top:0}.wide{width:100%}textarea{font:inherit;border:1px solid var(--line);border-radius:9px;padding:8px;width:100%;min-height:90px}.chart-wrap{overflow:auto}svg text{font-family:Arial,Helvetica,sans-serif;font-size:12px;fill:#334155}.assessment{background:#f1f5f9;border:1px solid #cbd5e1;border-radius:14px;padding:14px;margin-bottom:16px}.assessment h2{margin:0 0 10px;font-size:18px}.assessment ul{margin:8px 0 8px 20px;padding:0}.assessment li{margin:5px 0}.footer-note{font-size:12px;color:#64748b;text-align:center;padding:18px}
+.print-only{display:none}
+@media print{
+  body{background:white;color:#000}
+  header,aside,.modal,button,select,input,textarea,.no-print{display:none!important}
+  main{padding:0;max-width:none}
+  .grid{display:block}
+  .card{box-shadow:none;border:1px solid #bbb;break-inside:avoid;margin-bottom:10px}
+  .scroll{max-height:none;overflow:visible}
+  .calendar{display:block}
+  .day{break-inside:avoid;margin-bottom:4px;min-height:auto}
+  .print-only{display:block}
+  a{color:#000;text-decoration:none}
+  body.print-month #progressChart, body.print-month #progressInfo, body.print-month #changeSummary, body.print-month #changeTable, body.print-month #monthOverview, body.print-month #yearChecks, body.print-month #azgSummary, body.print-month #azgTable{display:none!important}
+}
+@media(max-width:1000px){.grid{grid-template-columns:1fr}.summary{grid-template-columns:repeat(2,1fr)}}
+
+.app-install{background:#eef2ff;border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:16px;line-height:1.45}
+.app-install b{display:block;margin-bottom:4px}
+.cloud-ok{color:#047857;font-weight:bold}.cloud-bad{color:#b91c1c;font-weight:bold}.cloud-warn{color:#b45309;font-weight:bold}
+footer{max-width:1500px;margin:0 auto 24px;padding:0 18px;color:var(--muted);font-size:12px}
+@media(max-width:700px){
+  header{padding:14px 16px;padding-top:calc(14px + env(safe-area-inset-top));position:sticky;top:0;z-index:5}
+  header h1{font-size:18px;line-height:1.25}
+  main{padding:10px}
+  .card{border-radius:12px;padding:11px;margin-bottom:10px}
+  .summary{grid-template-columns:1fr}
+  .calendar{grid-template-columns:repeat(7,minmax(42px,1fr));gap:4px;overflow-x:auto}
+  .day{min-height:92px;padding:5px;border-radius:8px}
+  .assignment select{font-size:11px;padding:4px}
+  table{font-size:12px}
+  th,td{padding:6px}
+  .scroll{max-height:360px;overflow:auto}
+  input,select,button{font-size:15px}
+}
+@media print{.app-install{display:none!important}}
+</style>
+</head>
+<body>
+<header><h1>Martin Gerber</h1><p>ÖV Arbeitszeit-, Dienst- und Spesenplanung</p></header>
+<main>
+<section class="app-install">
+  <b>📱 iPhone-App-Version</b>
+  Auf dem iPhone in Safari öffnen, dann <b>Teilen</b> antippen und <b>Zum Home-Bildschirm</b> wählen. Danach startet diese Datei wie eine App.
+</section>
+
+<div class="grid">
+<aside>
+<section class="card"><h2>Einstellungen</h2>
+  <div class="row"><label>Jahr</label><input id="year" type="number" value="2026" min="2020" max="2100"><button class="primary" onclick="renderAll()">Anzeigen</button></div>
+  <div class="row"><label>Pensum</label><select id="pensum" onchange="saveSettings();renderAll()"><option value="80">80 %</option><option value="100">100 %</option></select></div>
+  <div class="row"><label>Samstag CHF/Std.</label><input id="satRate" type="number" step="0.05" value="6"></div>
+  <div class="row"><label>Sonntag CHF/Std.</label><input id="sunRate" type="number" step="0.05" value="14"></div>
+  <div class="row"><label>Vor 06:00 CHF/Std.</label><input id="earlyRate" type="number" step="0.05" value="7"></div>
+  <div class="row"><label>Ab 20:00 CHF/Std.</label><input id="lateRate" type="number" step="0.05" value="7"></div>
+  <div class="row"><button onclick="saveSettings();renderAll()">Regeln speichern</button><button class="danger" onclick="resetAll()">Alles zurücksetzen</button></div>
+  <p class="note">Die alten Spesen aus dem Word werden nicht übernommen. Zulagen werden mit angebrochenen Minuten anteilig berechnet. F/K werden mit 5:25 Std. gerechnet. Pro echtem Dienst werden zusätzlich 5 Minuten Arbeitszeit gerechnet. Z = Bahnersatz, V = Verstärkung; die Dienstzeit/Spesenberechnung bleibt beim Grunddienst.</p>
+</section>
+<section class="card no-print"><h2>📱 GitHub / iPhone Aktualisierung</h2>
+  <div class="metric" style="margin-bottom:10px"><span>Status</span><b id="backupLastText">Noch keine Datei erstellt</b><small id="backupStatusText">Nach Änderungen am PC: HTML-Datei erstellen und auf GitHub als index.html hochladen.</small></div>
+  <div class="row"><button class="primary" onclick="exportHtmlForGithub()">📄 Aktuelle index.html für GitHub speichern</button></div>
+  <div class="row"><button onclick="exportBackup()">💾 JSON-Backup speichern</button></div>
+  <div class="row"><label class="small">JSON-Backup laden</label><input id="backupFile" type="file" accept="application/json,.json" onchange="importBackup(event)"></div>
+  <p class="note"><b>Ohne Cloud:</b> Du änderst alles am PC. Danach diese HTML-Datei auf GitHub ersetzen. Das iPhone ist nur zum Nachschauen.</p>
+</section>
+<section class="card no-print"><h2>Drucken</h2>
+  <div class="row"><button class="primary" onclick="printYearReport()">🖨️ Jahresbericht drucken</button></div>
+  <div class="row"><button onclick="printMonthReport()">🖨️ Aktuellen Monat drucken</button></div>
+</section>
+<section class="card"><h2>Dienst hinzufügen / ändern</h2>
+  <div class="row"><label>Nr.</label><input id="svcNo" placeholder="400" style="width:90px"><label>Beginn</label><input id="svcStart" type="time"><label>Ende</label><input id="svcEnd" type="time"></div>
+  <div class="row"><label>Arbeitszeit</label><input id="svcWork" placeholder="3:14 oder 3.14" style="width:130px"><button class="primary" onclick="upsertService()">Speichern</button></div>
+  <p class="note">Arbeitszeit kann überschrieben werden, weil sie nicht immer exakt von Beginn bis Ende entspricht.</p>
+</section>
+<section class="card"><h2>Dienste</h2><div class="scroll"><table id="serviceTable"></table></div></section>
+</aside>
+<section>
+<div class="assessment" id="yearAssessment"><h2>Jahresbeurteilung 2026</h2>
+  <ul>
+    <li>✓ Gute Verteilung von Ferien, Ruhetagen und Ruhesonntagen</li>
+    <li>✓ Keine auffällige Häufung von sehr langen Diensten</li>
+    <li>✓ Regelmässige Erholungsblöcke vorhanden</li>
+  </ul>
+  <ul>
+    <li>⚠ Viele kurze Dienste führen zu einer hohen Anzahl Arbeitstage</li>
+    <li>⚠ Arbeitsstunden und Einsatztage wirken nicht immer ausgewogen</li>
+  </ul>
+  <p class="note"><b>Fazit:</b> Die Einteilung ist grundsätzlich AZG-tauglich und organisatorisch gut verteilt. Für ein 80%-Pensum fällt jedoch die hohe Anzahl Einsatztage durch viele kurze Dienste auf. Dadurch entsteht trotz moderater Jahresarbeitszeit eine relativ hohe Präsenz über das Jahr.</p>
+</div>
+<div class="card"><div class="row"><h2 style="margin-right:auto">Übersicht</h2><button class="primary no-print" onclick="printYearReport()">🖨️ Jahresbericht drucken</button></div><div class="summary" id="summary"></div></div>
+<div class="card"><h2>Jahresverlauf Saldo zum 80%-Jahressoll</h2><div id="progressInfo" class="note"></div><div class="chart-wrap"><svg id="progressChart" width="900" height="340"></svg></div><p class="note">Diese Ansicht zeigt nicht die absoluten Stunden, sondern den kumulierten Saldo: 0:00 entspricht genau der 80%-Soll-Linie. Unter 0 = im Minus, über 0 = im Plus.</p></div>
+<div class="card"><h2>Dienständerungen / Tausch-Konto</h2><div class="summary" id="changeSummary"></div><div class="scroll"><table id="changeTable"></table></div></div>
+<div class="card"><h2>Monat für Monat</h2><div class="scroll"><table id="monthOverview"></table></div><p class="note">Klicke auf einen Monat, um Kalender und Details direkt auf diesen Monat zu wechseln.</p></div>
+<div class="card"><h2>Jahreskontrolle</h2><div class="summary" id="yearChecks"></div><p class="note">Ruhetage zählen R, RS, RRS und RR. Wochenendarbeit zählt nur Tage mit echtem Dienst.</p></div>
+<div class="card"><h2>AZG-Checker</h2><div class="legend"><span>🟢 Ruhezeit ≥ 12:00</span><span>🟠 11:00–11:59</span><span>🔴 unter 11:00</span></div><div class="summary" id="azgSummary" style="margin-top:10px"></div><div class="scroll"><table id="azgTable"></table></div><p class="note">Dies ist eine technische Plausibilitätsprüfung und keine rechtsverbindliche Beurteilung. Rot markierte Kalendertage bitte mit Dispo/Reglement/GAV-Ausnahmen prüfen.</p></div>
+<div class="card"><div class="row"><h2 style="margin-right:auto">Kalender</h2><select id="month" onchange="renderAll()"></select><button onclick="copyPreviousMonth()">Vormonat kopieren</button><button onclick="printMonthReport()">🖨️ Monat drucken</button></div><div class="calendar" id="calendar"></div></div>
+<div class="card"><h2>Monatsdetails</h2><div class="scroll"><table id="monthTable"></table></div></div>
+</section>
+</div>
+</main>
+<div class="footer-note">Version 2026 · Martin Gerber · Persönliche Arbeitszeit-, Spesen- und AZG-Auswertung</div>
+
+<div class="modal" id="changeModal">
+  <div class="modal-card">
+    <h2>Dienständerung erfassen</h2>
+    <div class="row"><label>Datum</label><input id="chgDate" readonly class="wide"></div>
+    <div class="row"><label>Geplant/original</label><input id="chgOriginal" readonly class="wide"></div>
+    <div class="row"><label>Neu/effektiv</label><select id="chgNew" class="wide" onchange="updateChangePreview()"></select></div>
+    <div class="row"><label>Grund / Bemerkung</label><textarea id="chgReason" placeholder="z.B. Diensttausch, Dispo, Krankheit, Bahnersatz..."></textarea></div>
+    <div class="row"><button class="primary" onclick="saveChange()">Änderung speichern</button><button onclick="closeChangeModal()">Abbrechen</button><button class="danger" onclick="deleteChange()">Änderung löschen</button></div>
+    <p class="note" id="chgPreview"></p>
+  </div>
+</div>
+<script>
+
+const APP_BUILD_ID = '2026-06-19-no-cloud';
+// DATA_START
+const DEFAULT_CHANGES = {"2026-06-15":{"original":"406","new":"K","reason":"","saved":"2026-06-16T14:06:35.369Z"},"2026-06-16":{"original":"410","new":"410","reason":"Test","saved":"2026-06-16T18:01:54.405Z"}};
+const DEFAULT_SETTINGS = {pensum:80,satRate:6,sunRate:14,earlyRate:7,lateRate:7,vacationHours:(5+25/60)};
+// DATA_END
+const DEFAULT_SERVICES = [{n:'400',s:'04:52',e:'08:06',w:'3:14'},{n:'401',s:'04:52',e:'12:18',w:'5:16'},{n:'402',s:'04:59',e:'12:58',w:'6:51'},{n:'403',s:'05:07',e:'14:38',w:'8:29'},{n:'404',s:'05:24',e:'09:37',w:'4:24'},{n:'405',s:'06:14',e:'18:08',w:'9:29'},{n:'406',s:'06:21',e:'19:02',w:'8:20'},{n:'407',s:'06:21',e:'19:02',w:'8:58'},{n:'408',s:'06:21',e:'19:02',w:'8:10'},{n:'409',s:'06:21',e:'19:02',w:'9:30'},{n:'410',s:'06:47',e:'13:58',w:'5:51'},{n:'411',s:'06:50',e:'16:58',w:'9:08'},{n:'412',s:'10:51',e:'19:39',w:'7:30'},{n:'413',s:'12:31',e:'20:22',w:'7:51'},{n:'414',s:'13:50',e:'23:47',w:'8:43'},{n:'415',s:'15:05',e:'23:32',w:'7:50'},{n:'416',s:'15:50',e:'00:08',w:'7:43'},{n:'417',s:'16:31',e:'21:09',w:'4:38'},{n:'418',s:'06:21',e:'19:02',w:'7:36'},{n:'419',s:'06:47',e:'17:01',w:'7:09'},{n:'420',s:'10:51',e:'20:15',w:'8:06'},{n:'421',s:'15:05',e:'21:39',w:'6:00'},{n:'422',s:'19:51',e:'04:03',w:'7:25'},{n:'431',s:'04:52',e:'13:58',w:'7:50'},{n:'432',s:'04:52',e:'12:58',w:'7:06'},{n:'433',s:'06:14',e:'17:21',w:'8:01'},{n:'434',s:'06:21',e:'16:58',w:'8:50'},{n:'435',s:'11:19',e:'19:02',w:'5:56'},{n:'436',s:'16:26',e:'21:09',w:'4:43'},{n:'441',s:'05:38',e:'13:18',w:'6:40'},{n:'442',s:'05:40',e:'14:36',w:'8:13'},{n:'443',s:'05:59',e:'13:38',w:'7:02'},{n:'444',s:'06:19',e:'17:18',w:'8:29'},{n:'445',s:'08:33',e:'20:15',w:'9:03'},{n:'446',s:'11:51',e:'19:58',w:'7:07'},{n:'447',s:'13:50',e:'00:00',w:'8:55'},{n:'448',s:'14:02',e:'23:40',w:'8:52'},{n:'449',s:'19:33',e:'03:56',w:'7:33'},{n:'451',s:'05:38',e:'16:12',w:'8:42'},{n:'452',s:'05:40',e:'17:14',w:'9:09'},{n:'453',s:'05:59',e:'13:38',w:'7:02'},{n:'454',s:'06:19',e:'11:23',w:'4:32'},{n:'455',s:'07:35',e:'18:32',w:'9:00'},{n:'456',s:'07:54',e:'15:38',w:'6:27'},{n:'457',s:'08:54',e:'19:58',w:'9:47'},{n:'458',s:'13:16',e:'20:18',w:'6:32'},{n:'459',s:'13:51',e:'23:40',w:'8:55'},{n:'460',s:'15:20',e:'00:00',w:'8:02'},{n:'461',s:'19:33',e:'03:56',w:'7:36'},{n:'471',s:'05:59',e:'16:11',w:'9:35'},{n:'472',s:'06:38',e:'15:38',w:'8:15'},{n:'473',s:'06:40',e:'14:18',w:'6:38'},{n:'474',s:'10:33',e:'21:04',w:'9:18'},{n:'475',s:'15:20',e:'23:25',w:'7:27'},{n:'476',s:'15:38',e:'00:01',w:'7:37'},{n:'477',s:'18:50',e:'23:40',w:'4:50'},{n:'481',s:'05:59',e:'15:38',w:'8:25'},{n:'482',s:'06:38',e:'11:23',w:'4:45'},{n:'483',s:'06:40',e:'13:18',w:'6:38'},{n:'484',s:'07:54',e:'17:14',w:'8:05'},{n:'485',s:'09:35',e:'17:59',w:'7:09'},{n:'486',s:'12:33',e:'21:04',w:'8:31'},{n:'487',s:'15:20',e:'23:25',w:'7:27'},{n:'488',s:'15:38',e:'00:01',w:'7:37'},{n:'489',s:'18:50',e:'23:40',w:'4:50'}];
+const DEFAULT_ASSIGNMENTS_2026 = {"2026-01-01":"F","2026-01-02":"F","2026-01-03":"A","2026-01-04":"RS","2026-01-05":"403","2026-01-06":"400","2026-01-07":"401","2026-01-08":"%","2026-01-09":"R","2026-01-10":"446","2026-01-11":"475","2026-01-12":"%","2026-01-13":"%","2026-01-14":"417","2026-01-15":"416","2026-01-16":"421","2026-01-17":"R","2026-01-18":"477","2026-01-19":"415","2026-01-20":"413","2026-01-21":"%","2026-01-22":"415","2026-01-23":"420","2026-01-24":"A","2026-01-25":"RS","2026-01-26":"%","2026-01-27":"%","2026-01-28":"404","2026-01-29":"409","2026-01-30":"405","2026-01-31":"441","2026-02-01":"Pikett","2026-02-02":"R","2026-02-03":"%","2026-02-04":"411","2026-02-05":"405","2026-02-06":"404","2026-02-07":"443","2026-02-08":"473","2026-02-09":"435","2026-02-10":"%","2026-02-11":"R","2026-02-12":"413","2026-02-13":"420","2026-02-14":"R","2026-02-15":"RS","2026-02-16":"%","2026-02-17":"404","2026-02-18":"410","2026-02-19":"400","2026-02-20":"403","2026-02-21":"441","2026-02-22":"RS","2026-02-23":"403","2026-02-24":"402","2026-02-25":"400","2026-02-26":"410","2026-02-27":"%","2026-02-28":"A","2026-03-01":"RS","2026-03-02":"406","2026-03-03":"411","2026-03-04":"%","2026-03-05":"400","2026-03-06":"%","2026-03-07":"442","2026-03-08":"472","2026-03-09":"401","2026-03-10":"%","2026-03-11":"R","2026-03-12":"405","2026-03-13":"411","2026-03-14":"A","2026-03-15":"RS","2026-03-16":"F","2026-03-17":"F","2026-03-18":"F","2026-03-19":"F","2026-03-20":"F","2026-03-21":"F","2026-03-22":"F","2026-03-23":"403","2026-03-24":"400","2026-03-25":"R","2026-03-26":"CZV","2026-03-27":"400","2026-03-28":"442","2026-03-29":"472","2026-03-30":"400","2026-03-31":"%","2026-04-01":"R","2026-04-02":"409","2026-04-03":"471","2026-04-04":"441","2026-04-05":"RS","2026-04-06":"R","2026-04-07":"403","2026-04-08":"432","2026-04-09":"431","2026-04-10":"%","2026-04-11":"442","2026-04-12":"471","2026-04-13":"R","2026-04-14":"%","2026-04-15":"403","2026-04-16":"402","2026-04-17":"432","2026-04-18":"442","2026-04-19":"RS","2026-04-20":"402","2026-04-21":"400","2026-04-22":"%","2026-04-23":"%","2026-04-24":"419","2026-04-25":"442","2026-04-26":"471","2026-04-27":"400","2026-04-28":"%","2026-04-29":"417","2026-04-30":"416","2026-05-01":"413","2026-05-02":"A","2026-05-03":"RS","2026-05-04":"F","2026-05-05":"F","2026-05-06":"F","2026-05-07":"F","2026-05-08":"F","2026-05-09":"F","2026-05-10":"F","2026-05-11":"411","2026-05-12":"405","2026-05-13":"404","2026-05-14":"R","2026-05-15":"%","2026-05-16":"451","2026-05-17":"481","2026-05-18":"406","2026-05-19":"%","2026-05-20":"%","2026-05-21":"412","2026-05-22":"413","2026-05-23":"457","2026-05-24":"RS","2026-05-25":"R","2026-05-26":"413","2026-05-27":"417","2026-05-28":"414","2026-05-29":"417","2026-05-30":"A","2026-05-31":"RS","2026-06-01":"%","2026-06-02":"414","2026-06-03":"415","2026-06-04":"412","2026-06-05":"413","2026-06-06":"455","2026-06-07":"RS","2026-06-08":"%","2026-06-09":"411","2026-06-10":"405","2026-06-11":"404","2026-06-12":"400","2026-06-13":"R","2026-06-14":"484","2026-06-15":"406","2026-06-16":"410","2026-06-17":"400","2026-06-18":"404","2026-06-19":"402","2026-06-20":"R","2026-06-21":"RS","2026-06-22":"400","2026-06-23":"403","2026-06-24":"%","2026-06-25":"401","2026-06-26":"400","2026-06-27":"455","2026-06-28":"RS","2026-06-29":"401","2026-06-30":"400","2026-07-01":"410","2026-07-02":"%","2026-07-03":"%","2026-07-04":"453","2026-07-05":"484","2026-07-06":"R","2026-07-07":"412","2026-07-08":"414","2026-07-09":"435","2026-07-10":"%","2026-07-11":"%","2026-07-12":"RS","2026-07-13":"436 Z","2026-07-14":"416","2026-07-15":"415","2026-07-16":"412","2026-07-17":"435 Z","2026-07-18":"R","2026-07-19":"486","2026-07-20":"435 Z","2026-07-21":"%","2026-07-22":"R","2026-07-23":"402","2026-07-24":"404","2026-07-25":"453","2026-07-26":"483","2026-07-27":"R","2026-07-28":"A","2026-07-29":"%","2026-07-30":"433","2026-07-31":"403","2026-08-01":"RS","2026-08-02":"RS","2026-08-03":"%","2026-08-04":"%","2026-08-05":"433","2026-08-06":"403","2026-08-07":"434","2026-08-08":"455","2026-08-09":"RS","2026-08-10":"417","2026-08-11":"416","2026-08-12":"415","2026-08-13":"412","2026-08-14":"%","2026-08-15":"%","2026-08-16":"RS","2026-08-17":"406","2026-08-18":"411","2026-08-19":"401","2026-08-20":"%","2026-08-21":"A","2026-08-22":"457","2026-08-23":"486","2026-08-24":"%","2026-08-25":"A","2026-08-26":"415","2026-08-27":"412","2026-08-28":"419","2026-08-29":"A","2026-08-30":"RS","2026-08-31":"F","2026-09-01":"F","2026-09-02":"F","2026-09-03":"F","2026-09-04":"F","2026-09-05":"F","2026-09-06":"F","2026-09-07":"F","2026-09-08":"F","2026-09-09":"F","2026-09-10":"F","2026-09-11":"F","2026-09-12":"F","2026-09-13":"F","2026-09-14":"411","2026-09-15":"413","2026-09-16":"%","2026-09-17":"412","2026-09-18":"421","2026-09-19":"R","2026-09-20":"RS","2026-09-21":"%","2026-09-22":"436","2026-09-23":"416","2026-09-24":"414","2026-09-25":"413","2026-09-26":"456","2026-09-27":"RS","2026-09-28":"436","2026-09-29":"416","2026-09-30":"415","2026-10-01":"412","2026-10-02":"%","2026-10-03":"R","2026-10-04":"482","2026-10-05":"431","2026-10-06":"434","2026-10-07":"433","2026-10-08":"%","2026-10-09":"432","2026-10-10":"456","2026-10-11":"RS","2026-10-12":"403","2026-10-13":"405","2026-10-14":"%","2026-10-15":"404","2026-10-16":"400","2026-10-17":"R","2026-10-18":"A","2026-10-19":"411","2026-10-20":"400","2026-10-21":"R","2026-10-22":"%","2026-10-23":"416","2026-10-24":"459","2026-10-25":"486","2026-10-26":"%","2026-10-27":"R","2026-10-28":"414","2026-10-29":"412","2026-10-30":"Pikett","2026-10-31":"451","2026-11-01":"RS","2026-11-02":"404","2026-11-03":"403","2026-11-04":"401","2026-11-05":"400","2026-11-06":"%","2026-11-07":"%","2026-11-08":"RS","2026-11-09":"414","2026-11-10":"415","2026-11-11":"412","2026-11-12":"%","2026-11-13":"%","2026-11-14":"RR","2026-11-15":"472","2026-11-16":"402","2026-11-17":"407","2026-11-18":"%","2026-11-19":"%","2026-11-20":"404","2026-11-21":"445","2026-11-22":"RS","2026-11-23":"%","2026-11-24":"%","2026-11-25":"%","2026-11-26":"R","2026-11-27":"416","2026-11-28":"447","2026-11-29":"477","2026-11-30":"AA","2026-12-01":"AA","2026-12-02":"AA","2026-12-03":"AA","2026-12-04":"AA","2026-12-05":"AA","2026-12-06":"RRS","2026-12-07":"412","2026-12-08":"413","2026-12-09":"%","2026-12-10":"404","2026-12-11":"411","2026-12-12":"442","2026-12-13":"RS","2026-12-14":"400","2026-12-15":"Pikett","2026-12-16":"405","2026-12-17":"411","2026-12-18":"%","2026-12-19":"A","2026-12-20":"RS","2026-12-21":"F","2026-12-22":"F","2026-12-23":"F","2026-12-24":"F","2026-12-25":"F","2026-12-26":"F","2026-12-27":"F","2026-12-28":"%","2026-12-29":"435","2026-12-30":"412","2026-12-31":"R"};
+const SPECIAL_TYPES = {'R':'Ruhetag','RS':'Ruhesonntag','RRS':'gewünschter Ruhesonntag','%':'Nicht-100%-Tag','A':'Ausgleichstag','AA':'gewünschter Ausgleichstag','Pikett':'Pikett','F':'Ferien','K':'Krank','RR':'Ruhetag','CZV':'CZV/Weiterbildung'};
+const monthNames=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+let services = JSON.parse(localStorage.getItem('services_v2')||'null') || DEFAULT_SERVICES;
+let assignments = JSON.parse(localStorage.getItem('assignments_v2')||'null') || DEFAULT_ASSIGNMENTS_2026;
+let changes = JSON.parse(localStorage.getItem('changes_v1')||'null') || DEFAULT_CHANGES;
+let activeChangeDate = null;
+let settings = JSON.parse(localStorage.getItem('settings_v2')||'null') || DEFAULT_SETTINGS;
+// Korrektur: 5:25 Std. sind 5 + 25/60 = 5.4167 Stunden. Falls aus einer alten Version 5.25 gespeichert war, wird es automatisch korrigiert.
+if(settings.vacationHours && settings.vacationHours <= 5.26) settings.vacationHours = (5+25/60);
+if(localStorage.getItem('app_build_id_v1') !== APP_BUILD_ID){
+  services = DEFAULT_SERVICES; assignments = DEFAULT_ASSIGNMENTS_2026; changes = DEFAULT_CHANGES; settings = DEFAULT_SETTINGS;
+  localStorage.setItem('services_v2',JSON.stringify(services));
+  localStorage.setItem('assignments_v2',JSON.stringify(assignments));
+  localStorage.setItem('changes_v1',JSON.stringify(changes));
+  localStorage.setItem('settings_v2',JSON.stringify(settings));
+  localStorage.setItem('app_build_id_v1',APP_BUILD_ID);
+}
+function min(t){let [h,m]=t.split(':').map(Number);return h*60+m} function hdec(hm){if(!hm)return 0; hm=String(hm).replace('.',':');let [h,m='0']=hm.split(':').map(Number);return h+(m/60)}
+function money(x){return 'CHF '+(Math.round(x*100)/100).toFixed(2)} function hours(x){let neg=x<0;x=Math.abs(x);let h=Math.floor(x),m=Math.round((x-h)*60);if(m==60){h++;m=0}return (neg?'-':'')+h+':'+String(m).padStart(2,'0')}
+function cleanNo(v){let m=String(v||'').match(/\b(\d{3})\b/);return m?m[1]:String(v||'')}
+function suffixCode(v){let m=String(v||'').trim().match(/\b\d{3}\s*([ZV])\b/i);return m?m[1].toUpperCase():''}
+function suffixLabel(v){let c=suffixCode(v);return c==='Z'?'Bahnersatz':(c==='V'?'Verstärkung':'')}
+function displayCode(v){let z=suffixLabel(v);return cleanNo(v)+(z?' – '+z:'')}
+function assignmentLabel(v){if(!v)return 'frei'; if(statusInfo(v))return v+' – '+statusInfo(v); let svc=serviceByNo(v); return displayCode(v)+(svc?' ('+svc.s+'–'+svc.e+', '+svc.w+')':'');}
+function originalForDate(ds){return (changes[ds]&&changes[ds].original!==undefined)?changes[ds].original:(DEFAULT_ASSIGNMENTS_2026[ds]||'');}
+function effectiveForDate(ds){return assignments[ds]||'';}
+function workDiffForDate(ds){let orig=calcFor(ds,originalForDate(ds)); let eff=calcFor(ds,effectiveForDate(ds)); return (eff?eff.work:0)-(orig?orig.work:0);}
+function expenseDiffForDate(ds){let orig=calcFor(ds,originalForDate(ds)); let eff=calcFor(ds,effectiveForDate(ds)); return (eff?eff.total:0)-(orig?orig.total:0);}
+function openChangeModal(ds){activeChangeDate=ds; chgDate.value=ds; let orig=originalForDate(ds); chgOriginal.value=assignmentLabel(orig); chgNew.innerHTML=serviceOptions(effectiveForDate(ds)); chgReason.value=(changes[ds]&&changes[ds].reason)||''; updateChangePreview(); changeModal.classList.add('open');}
+function closeChangeModal(){changeModal.classList.remove('open'); activeChangeDate=null;}
+function updateChangePreview(){if(!activeChangeDate)return; let old=calcFor(activeChangeDate, originalForDate(activeChangeDate)); let neu=calcFor(activeChangeDate, chgNew.value); let dw=(neu?neu.work:0)-(old?old.work:0); let ds=(neu?neu.total:0)-(old?old.total:0); chgPreview.textContent='Differenz zur ursprünglichen Planung: '+hours(dw)+' Std., '+money(ds)+' Spesen/Zulagen.';}
+function saveChange(){if(!activeChangeDate)return; let orig=originalForDate(activeChangeDate); let neu=chgNew.value; if(neu)assignments[activeChangeDate]=neu; else delete assignments[activeChangeDate]; changes[activeChangeDate]={original:orig,new:neu,reason:chgReason.value.trim(),saved:new Date().toISOString()}; saveAssignments(); saveChanges(); closeChangeModal(); renderAll();}
+function deleteChange(){if(!activeChangeDate)return; let orig=originalForDate(activeChangeDate); if(orig)assignments[activeChangeDate]=orig; else delete assignments[activeChangeDate]; delete changes[activeChangeDate]; saveAssignments(); saveChanges(); closeChangeModal(); renderAll();}
+
+function serviceByNo(no){return services.find(x=>x.n==cleanNo(no))}
+function rates(){return {sat:+satRate.value||0,sun:+sunRate.value||0,early:+earlyRate.value||0,late:+lateRate.value||0}}
+function shiftMinutes(svc){let st=min(svc.s), en=min(svc.e); if(en<=st) en+=1440; return {st,en,dur:en-st}}
+function overlap(a,b,c,d){return Math.max(0,Math.min(b,d)-Math.max(a,c))}
+function statusInfo(v){return SPECIAL_TYPES[v] || null}
+function calcFor(dateStr,val){
+  if(!val)return null;
+  let date=new Date(dateStr+'T12:00:00'), dow=date.getDay();
+  if(statusInfo(val)){let work=(val==='F'||val==='K')?(+settings.vacationHours||(5+25/60)):(val==='CZV'?8:0);return {kind:'status',label:statusInfo(val),code:val,work,early:0,late:0,day:0,extra:0,total:0,dow};}
+  let svc=serviceByNo(val); if(!svc)return {kind:'unknown',label:val,code:val,work:0,early:0,late:0,day:0,extra:0,total:0,dow};
+  let note=suffixLabel(val);
+  let r=rates(); let baseWork=hdec(svc.w); let prePost=(5/60); let work=baseWork+prePost; let sm=shiftMinutes(svc); sm.en+=5;
+  // Zulagenregel: angebrochene Stunden/Minuten werden anteilig berechnet.
+  let earlyRaw=overlap(sm.st,sm.en,0,360)/60;
+  let lateRaw=(overlap(sm.st,sm.en,1200,1440)+overlap(sm.st,sm.en,2640,2880))/60;
+  let earlyBill=earlyRaw;
+  let lateBill=lateRaw;
+  let dayBill=work;
+  let dayRate=dow==0?r.sun:(dow==6?r.sat:0);
+  let day=dayBill*dayRate;
+  let extra=earlyBill*r.early+lateBill*r.late;
+  return {kind:'service',svc,code:val,note,work,baseWork,prePost,early:earlyBill,late:lateBill,earlyRaw,lateRaw,dayBill,day,extra,total:day+extra,dow};
+}
+function saveSettings(){settings={pensum:+pensum.value,satRate:+satRate.value,sunRate:+sunRate.value,earlyRate:+earlyRate.value,lateRate:+lateRate.value,vacationHours:(5+25/60)};localStorage.setItem('settings_v2',JSON.stringify(settings));}
+function saveServices(){services.sort((a,b)=>+a.n-+b.n);localStorage.setItem('services_v2',JSON.stringify(services));}
+function saveAssignments(){localStorage.setItem('assignments_v2',JSON.stringify(assignments));}
+function saveChanges(){localStorage.setItem('changes_v1',JSON.stringify(changes));}
+function init(){monthNames.forEach((m,i)=>month.innerHTML+=`<option value="${i}">${m}</option>`);month.value='0';pensum.value=settings.pensum;satRate.value=settings.satRate;sunRate.value=settings.sunRate;earlyRate.value=settings.earlyRate;lateRate.value=settings.lateRate;renderAll()}
+function upsertService(){let n=svcNo.value.trim(), s=svcStart.value, e=svcEnd.value, w=svcWork.value.trim().replace('.',':'); if(!n||!s||!e||!w){alert('Bitte Nr., Beginn, Ende und Arbeitszeit eingeben.');return} let old=serviceByNo(n); if(old){old.s=s;old.e=e;old.w=w}else services.push({n,s,e,w}); saveServices(); renderServices(); renderAll(); svcNo.value=svcStart.value=svcEnd.value=svcWork.value=''}
+function editService(n){let x=serviceByNo(n);svcNo.value=x.n;svcStart.value=x.s;svcEnd.value=x.e;svcWork.value=x.w;scrollTo(0,0)}
+function delService(n){if(!confirm('Dienst '+n+' löschen?'))return;services=services.filter(x=>x.n!=n);saveServices();renderAll()}
+function renderServices(){serviceTable.innerHTML='<tr><th>Dienst</th><th>Zeit</th><th>Arb.</th><th></th></tr>'+services.map(x=>`<tr><td><b>${x.n}</b></td><td>${x.s}–${x.e}</td><td>${x.w}</td><td><button class="small" onclick="editService('${x.n}')">Ändern</button> <button class="small danger" onclick="delService('${x.n}')">X</button></td></tr>`).join('')}
+function serviceOptions(sel=''){let html='<option value="">frei</option><optgroup label="Spezialtage">'; for(let k of ['R','RS','RRS','%','A','AA','Pikett','F','K','CZV','RR']) html+=`<option value="${k}" ${k==sel?'selected':''}>${k} – ${SPECIAL_TYPES[k]}</option>`; html+='</optgroup><optgroup label="Dienste">'; html+=services.map(x=>`<option value="${x.n}" ${x.n==cleanNo(sel)?'selected':''}>${x.n} ${x.s}–${x.e}</option>`).join(''); return html+'</optgroup>'}
+function setAssignment(d,v){if(v)assignments[d]=v;else delete assignments[d];saveAssignments();renderAll()}
+function monthTarget(y,m){let days=new Date(y,m+1,0).getDate(); if(+pensum.value==80) return days==28?126.64:days==30?135.68:140.24; return days==28?158.3:days==30?169.6:175.3;}
+function yearTarget(y){let leap=new Date(y,1,29).getMonth()==1; return +pensum.value==80?(leap?1657:1644):(leap?2071:2050)}
+function renderCalendar(){let y=+year.value,m=+month.value;let azg=azgIssuesByDate();let first=new Date(y,m,1).getDay(); let offset=(first+6)%7;let days=new Date(y,m+1,0).getDate(); let html=['Mo','Di','Mi','Do','Fr','Sa','So'].map(d=>`<div class="dow">${d}</div>`).join(''); for(let i=0;i<offset;i++)html+='<div class="day empty"></div>'; for(let d=1;d<=days;d++){let ds=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;let date=new Date(ds+'T12:00');let cls=date.getDay()==6?'sat':date.getDay()==0?'sun':'';let issues=azg[ds]||[];let sev=issues.some(x=>x.level==='red')?'azg-red':(issues.some(x=>x.level==='orange')?'azg-orange':'');let val=assignments[ds]||'';let c=calcFor(ds,val);let info=''; if(c){ if(c.kind==='service') info=`<div class="calc">${c.note?'<span class="pill">'+c.note+'</span><br>':''}Arb. <strong>${hours(c.work)}</strong><br><small>inkl. 5 Min Zusatzzeit</small><br>Spesen <strong>${money(c.total)}</strong></div>`; else info=`<div class="calc"><span class="pill">${c.label}</span><br>${c.work?('Zeit <strong>'+hours(c.work)+'</strong>'):'keine Arbeitszeit'}</div>`; } let azgInfo=issues.length?`<div class="azg-box ${sev==='azg-red'?'red':'orange'}">${issues.map(x=>x.text).join('<br>')}</div>`:''; let ch=changes[ds]; let chInfo=ch?`<div class="change-box">Änderung: ${hours(workDiffForDate(ds))} Std.<br>${(ch.reason||'ohne Bemerkung')}</div>`:''; html+=`<div class="day ${cls} ${sev}"><div class="date">${d}</div><div class="assignment"><select onchange="setAssignment('${ds}',this.value)">${serviceOptions(val)}</select>${info}${azgInfo}<button class="small" style="margin-top:6px" onclick="openChangeModal('${ds}')">Änderung</button>${chInfo}</div></div>`} calendar.innerHTML=html}
+function allCalcs(filterMonth=null){let y=+year.value, arr=[]; Object.keys(assignments).sort().forEach(ds=>{if(!ds.startsWith(y+'-'))return;let m=+ds.slice(5,7)-1;if(filterMonth!==null&&m!==filterMonth)return;let c=calcFor(ds,assignments[ds]);if(c)arr.push({date:ds,...c})});return arr}
+function renderSummary(){let y=+year.value,m=+month.value;let mon=allCalcs(m), yr=allCalcs();let monWork=mon.filter(x=>x.kind==='service'||x.code==='F'||x.code==='K'||x.code==='CZV'), yrWork=yr.filter(x=>x.kind==='service'||x.code==='F'||x.code==='K'||x.code==='CZV');let mh=monWork.reduce((a,x)=>a+x.work,0), ms=mon.reduce((a,x)=>a+x.total,0), yh=yrWork.reduce((a,x)=>a+x.work,0), ys=yr.reduce((a,x)=>a+x.total,0);let mt=monthTarget(y,m), yt=yearTarget(y);let serviceCount=mon.filter(x=>x.kind==='service').length;let yearServiceCount=yr.filter(x=>x.kind==='service').length;let avgDay=yearServiceCount?yh/yearServiceCount:0;let avgMonth=yearServiceCount/12;summary.innerHTML=`<div class="metric"><span>Monat Arbeit</span><b>${hours(mh)}</b><small>Soll ${hours(mt)} / Diff ${hours(mh-mt)}</small></div><div class="metric"><span>Monat Arbeitstage</span><b>${serviceCount}</b><small>nur Dienstnummern</small></div><div class="metric"><span>Jahr Arbeit</span><b>${hours(yh)}</b><small>Soll ${hours(yt)} / Diff ${hours(yh-yt)}</small></div><div class="metric"><span>Jahr Arbeitstage</span><b>${yearServiceCount}</b><small>Ø ${avgMonth.toFixed(1)} pro Monat</small></div><div class="metric"><span>Ø pro Arbeitstag</span><b>${hours(avgDay)}</b><small>zeigt, ob viele kurze Dienste geplant sind</small></div><div class="metric"><span>Spesen</span><b>${money(ys)}</b><small>Monat ${money(ms)}, Jahr total</small></div>`}
+function renderMonthTable(){let arr=allCalcs(+month.value); monthTable.innerHTML='<tr><th>Datum</th><th>Eintrag</th><th>Zeit</th><th>Arbeit</th><th>Vor/Nach</th><th>Tag</th><th>Vor 6</th><th>Nach 20</th><th>Total</th></tr>'+arr.map(x=>{if(x.kind!=='service') return `<tr><td>${x.date}</td><td>${x.code}</td><td>${x.label}</td><td>${x.work?hours(x.work):'-'}</td><td>-</td><td>-</td><td>-</td><td>-</td><td><b>${money(0)}</b></td></tr>`; return `<tr><td>${x.date}</td><td>${displayCode(x.code)}</td><td>${x.svc.s}–${x.svc.e}</td><td>${hours(x.work)}</td><td>+0:05</td><td>${money(x.day)}</td><td>${money(x.early*(+earlyRate.value||0))}</td><td>${money(x.late*(+lateRate.value||0))}</td><td><b>${money(x.total)}</b></td></tr>`}).join('')}
+
+
+function dayIndex(ds){let d=new Date(ds+'T00:00:00');let y=d.getFullYear();return Math.floor((d-new Date(y,0,1))/(24*3600*1000));}
+function absShift(ds,val){let svc=serviceByNo(val); if(!svc)return null; let base=dayIndex(ds)*1440; let st=base+min(svc.s), en=base+min(svc.e); if(en<=st)en+=1440; en+=5; return {date:ds,code:val,svc,start:st,end:en,work:calcFor(ds,val).work};}
+function serviceDays(){let y=+year.value;return Object.keys(assignments).sort().filter(ds=>ds.startsWith(y+'-')).map(ds=>absShift(ds,assignments[ds])).filter(Boolean).sort((a,b)=>a.start-b.start);}
+function azgIssues(){let days=serviceDays();let issues=[];for(let i=0;i<days.length;i++){let cur=days[i]; if(i>0){let prev=days[i-1]; let rest=(cur.start-prev.end)/60; if(rest<12){issues.push({date:cur.date,level:rest<11?'red':'orange',type:'Ruhezeit',text:`${rest<11?'🔴':'🟠'} Ruhezeit ${hours(rest)} nach ${displayCode(prev.code)} bis ${prev.svc.e}`});}} if(cur.work>10){issues.push({date:cur.date,level:'red',type:'Dienstdauer',text:`🔴 Arbeitszeit ${hours(cur.work)} über 10:00`});}}
+  let streak=0; let prevIdx=null; for(let i=0;i<days.length;i++){let di=dayIndex(days[i].date); if(prevIdx!==null && di===prevIdx+1)streak++; else streak=1; if(streak>6){issues.push({date:days[i].date,level:'orange',type:'Arbeitsblock',text:`🟠 ${streak} Arbeitstage am Stück`});} prevIdx=di;}
+  return issues;}
+function azgIssuesByDate(){let map={}; azgIssues().forEach(x=>{(map[x.date]||(map[x.date]=[])).push(x)});return map;}
+function renderAZGChecker(){let issues=azgIssues();let red=issues.filter(x=>x.level==='red').length, orange=issues.filter(x=>x.level==='orange').length;let days=serviceDays();let longest=0,cur=0,prev=null;days.forEach(d=>{let di=dayIndex(d.date);cur=(prev!==null&&di===prev+1)?cur+1:1;longest=Math.max(longest,cur);prev=di;});azgSummary.innerHTML=`<div class="metric"><span>Kritisch rot</span><b class="${red?'bad':'ok'}">${red}</b><small>z.B. Ruhezeit unter 11:00</small></div><div class="metric"><span>Hinweise orange</span><b class="${orange?'bad':'ok'}">${orange}</b><small>z.B. Ruhezeit 11:00–11:59</small></div><div class="metric"><span>Längster Arbeitsblock</span><b>${longest} Tage</b><small>Warnung ab 7 Tagen</small></div><div class="metric"><span>Geprüfte Arbeitstage</span><b>${days.length}</b><small>nur Dienstnummern</small></div>`;azgTable.innerHTML='<tr><th>Datum</th><th>Prüfung</th><th>Status</th></tr>'+(issues.length?issues.map(x=>`<tr><td>${x.date}</td><td>${x.type}</td><td class="${x.level==='red'?'bad':'bad'}">${x.text}</td></tr>`).join(''):'<tr><td colspan="3">Keine roten/orangen AZG-Hinweise gefunden.</td></tr>');}
+function isServiceOn(ds){let c=calcFor(ds,assignments[ds]);return c&&c.kind==='service'}
+function renderYearChecks(){
+  let y=+year.value;
+  let ruheCodes=['R','RS','RRS','RR'];
+  let ruheTotal=0, ruhesonntagTotal=0, workedSatDays=0, workedSunDays=0, totalSat=0, totalSun=0;
+  let weekendBoth=0, weekendOnlySat=0, weekendOnlySun=0;
+  let d=new Date(y,0,1);
+  while(d.getFullYear()===y){
+    let ds=d.toISOString().slice(0,10), dow=d.getDay(), val=assignments[ds]||'';
+    if(ruheCodes.includes(val)){ruheTotal++;}
+    // Ruhesonntage zählen nur RS und RRS, wenn sie tatsächlich auf einen Sonntag fallen.
+    if(dow===0 && ['RS','RRS'].includes(val)){ruhesonntagTotal++;}
+    if(dow===6){totalSat++; if(isServiceOn(ds))workedSatDays++;}
+    if(dow===0){totalSun++; if(isServiceOn(ds))workedSunDays++;}
+    d.setDate(d.getDate()+1);
+  }
+  // Wochenenden: Samstag plus direkt folgender Sonntag.
+  d=new Date(y,0,1);
+  while(d.getFullYear()===y){
+    if(d.getDay()===6){
+      let sat=d.toISOString().slice(0,10);
+      let sunDate=new Date(d); sunDate.setDate(sunDate.getDate()+1);
+      if(sunDate.getFullYear()===y){
+        let sun=sunDate.toISOString().slice(0,10);
+        let sw=isServiceOn(sat), uw=isServiceOn(sun);
+        if(sw&&uw)weekendBoth++; else if(sw)weekendOnlySat++; else if(uw)weekendOnlySun++;
+      }
+    }
+    d.setDate(d.getDate()+1);
+  }
+  let ruheOk=ruheTotal===63, sonOk=ruhesonntagTotal>=20;
+  let yearServiceCount=allCalcs().filter(x=>x.kind==='service').length;
+  yearChecks.innerHTML=`
+    <div class="metric"><span>Arbeitstage Jahr</span><b>${yearServiceCount}</b><small>nur Tage mit Dienstnummern</small></div>
+    <div class="metric"><span>Ruhetage</span><b class="${ruheOk?'ok':'bad'}">${ruheTotal} / 63</b><small>gezählt: R, RS, RRS, RR</small></div>
+    <div class="metric"><span>Ruhesonntage</span><b class="${sonOk?'ok':'bad'}">${ruhesonntagTotal} / 20</b><small>gezählt: RS und RRS auf Sonntag</small></div>
+    <div class="metric"><span>Samstage gearbeitet</span><b>${workedSatDays} / ${totalSat}</b><small>alle Samstage im Jahr ${y}</small></div>
+    <div class="metric"><span>Sonntage gearbeitet</span><b>${workedSunDays} / ${totalSun}</b><small>alle Sonntage im Jahr ${y}</small></div>
+    <div class="metric"><span>Ganzes Wochenende gearbeitet</span><b>${weekendBoth}</b><small>Samstag und Sonntag Dienst</small></div>
+    <div class="metric"><span>Nur Samstag gearbeitet</span><b>${weekendOnlySat}</b><small>Sonntag frei/kein Dienst</small></div>
+    <div class="metric"><span>Nur Sonntag gearbeitet</span><b>${weekendOnlySun}</b><small>Samstag frei/kein Dienst</small></div>
+    <div class="metric"><span>Wochenenden im Jahr</span><b>${Math.min(totalSat,totalSun)}</b><small>${totalSat} Samstage, ${totalSun} Sonntage</small></div>`;
+}
+
+function renderMonthOverview(){
+  let y=+year.value;
+  let rows=[];
+  for(let m=0;m<12;m++){
+    let arr=allCalcs(m);
+    let workArr=arr.filter(x=>x.kind==='service'||x.code==='F'||x.code==='K'||x.code==='CZV');
+    let work=workArr.reduce((a,x)=>a+x.work,0);
+    let expenses=arr.reduce((a,x)=>a+x.total,0);
+    let target=monthTarget(y,m);
+    let servicesCnt=arr.filter(x=>x.kind==='service').length;
+    let fCnt=arr.filter(x=>x.code==='F').length;
+    let kCnt=arr.filter(x=>x.code==='K').length;
+    let rCnt=arr.filter(x=>['R','RS','RRS','RR'].includes(x.code)).length;
+    let satWork=arr.filter(x=>x.kind==='service'&&x.dow===6).length;
+    let sunWork=arr.filter(x=>x.kind==='service'&&x.dow===0).length;
+    let diff=work-target;
+    rows.push(`<tr><td><button class="small" onclick="month.value='${m}';renderAll();document.getElementById('calendar').scrollIntoView({behavior:'smooth'});">${monthNames[m]}</button></td><td>${hours(work)}</td><td>${hours(target)}</td><td class="${diff>=0?'ok':'bad'}">${hours(diff)}</td><td>${money(expenses)}</td><td>${servicesCnt}</td><td>${fCnt}</td><td>${kCnt}</td><td>${rCnt}</td><td>${satWork}</td><td>${sunWork}</td></tr>`);
+  }
+  monthOverview.innerHTML='<tr><th>Monat</th><th>Ist-Zeit</th><th>Soll</th><th>+/-</th><th>Spesen</th><th>Dienste</th><th>Ferien</th><th>Krank</th><th>Ruhetage</th><th>Sa gearbeitet</th><th>So gearbeitet</th></tr>'+rows.join('');
+}
+
+
+function renderChangeSummary(){
+  let y=+year.value; let keys=Object.keys(changes).filter(ds=>ds.startsWith(y+'-')).sort();
+  let totalWork=keys.reduce((a,ds)=>a+workDiffForDate(ds),0);
+  let totalExpense=keys.reduce((a,ds)=>a+expenseDiffForDate(ds),0);
+  changeSummary.innerHTML=`<div class="metric"><span>Änderungen</span><b>${keys.length}</b><small>Diensttausch/Änderungen im Jahr</small></div><div class="metric"><span>Plus/Minus durch Tausch</span><b class="${totalWork>=0?'ok':'bad'}">${hours(totalWork)}</b><small>gegen ursprüngliche Planung</small></div><div class="metric"><span>Spesendifferenz</span><b class="${totalExpense>=0?'ok':'bad'}">${money(totalExpense)}</b><small>neue minus alte Zulagen</small></div><div class="metric"><span>Jahressoll 80%</span><b>${hours(yearTarget(y))}</b><small>Kontrolle separat zur Tauschzeit</small></div>`;
+  changeTable.innerHTML='<tr><th>Datum</th><th>Geplant</th><th>Effektiv</th><th>Zeit +/-</th><th>Spesen +/-</th><th>Bemerkung</th><th></th></tr>'+keys.map(ds=>`<tr><td>${ds}</td><td>${assignmentLabel(originalForDate(ds))}</td><td>${assignmentLabel(effectiveForDate(ds))}</td><td class="${workDiffForDate(ds)>=0?'ok':'bad'}">${hours(workDiffForDate(ds))}</td><td class="${expenseDiffForDate(ds)>=0?'ok':'bad'}">${money(expenseDiffForDate(ds))}</td><td>${(changes[ds].reason||'')}</td><td><button class="small" onclick="openChangeModal('${ds}')">Ändern</button></td></tr>`).join('');
+}
+function cumulativeWorkByMonth(){let y=+year.value, out=[], cum=0; for(let m=0;m<12;m++){let arr=allCalcs(m).filter(x=>x.kind==='service'||x.code==='F'||x.code==='K'||x.code==='CZV'); cum+=arr.reduce((a,x)=>a+x.work,0); out.push(cum);} return out;}
+function renderProgressChart(){
+  let y=+year.value, svg=progressChart; let W=900,H=340,padL=62,padR=24,padT=28,padB=48;
+  let ist=cumulativeWorkByMonth(); let target=yearTarget(y);
+  // Durchschnittslinie: Jahressoll gleichmässig über 12 Monate verteilt. Der gezeichnete Wert ist der Saldo gegen diese Linie.
+  let soll=Array.from({length:12},(_,i)=>target*(i+1)/12);
+  let saldo=ist.map((v,i)=>v-soll[i]);
+  let maxAbs=Math.max(10, ...saldo.map(v=>Math.abs(v))) * 1.25;
+  let x=i=>padL+i*(W-padL-padR)/11;
+  let yv=v=>padT + (maxAbs-v) * (H-padT-padB) / (maxAbs*2);
+  let path=arr=>arr.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+yv(v).toFixed(1)).join(' ');
+  let grid='';
+  for(let g=-2;g<=2;g++){
+    let val=maxAbs*g/2, yy=yv(val);
+    grid+=`<line x1="${padL}" y1="${yy}" x2="${W-padR}" y2="${yy}" stroke="${Math.abs(val)<0.001?'#0f172a':'#e2e8f0'}" stroke-width="${Math.abs(val)<0.001?2:1}"/><text x="8" y="${yy+4}">${hours(val)}</text>`;
+  }
+  let labels=monthNames.map((m,i)=>`<text x="${x(i)-12}" y="${H-16}">${m.slice(0,3)}</text>`).join('');
+  let points=saldo.map((v,i)=>`<circle cx="${x(i)}" cy="${yv(v)}" r="4" fill="${v>=0?'#047857':'#b91c1c'}"><title>${monthNames[i]} Saldo: ${hours(v)} / Ist kumuliert: ${hours(ist[i])} / Soll kumuliert: ${hours(soll[i])}</title></circle>`).join('');
+  let area=saldosToArea(saldo,x,yv,H-padB);
+  svg.innerHTML=`<rect x="0" y="0" width="${W}" height="${H}" fill="white"/>${grid}<path d="${area}" fill="#dbeafe" opacity="0.75"/><path d="${path(saldo)}" fill="none" stroke="#1d4ed8" stroke-width="4"/>${points}${labels}<text x="${padL}" y="18">Saldo gegenüber 80%-Soll</text><text x="${W-255}" y="18" fill="#1d4ed8">Saldo-Linie</text><text x="${W-160}" y="18" fill="#0f172a">0:00 = 80%-Linie</text>`;
+  let minVal=Math.min(...saldo), maxVal=Math.max(...saldo), maxM=monthNames[saldo.indexOf(maxVal)], minM=monthNames[saldo.indexOf(minVal)];
+  let diff=ist[11]-target; progressInfo.innerHTML=`Ende Jahr: Ist ${hours(ist[11])}, Jahressoll ${hours(target)}, Differenz <b class="${diff>=0?'ok':'bad'}">${hours(diff)}</b>. Tiefster Punkt: ${minM} ${hours(minVal)}, höchster Punkt: ${maxM} ${hours(maxVal)}.`;
+}
+function saldosToArea(arr,x,yv,bottom){let p=arr.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+yv(v).toFixed(1)).join(' ');return p+` L ${x(arr.length-1).toFixed(1)} ${bottom} L ${x(0).toFixed(1)} ${bottom} Z`;}
+
+
+
+function backupMeta(){try{return JSON.parse(localStorage.getItem('backup_meta_v1')||'{}')}catch(e){return {}}}
+function formatDateTime(iso){if(!iso)return 'Noch keine'; let d=new Date(iso); return d.toLocaleDateString('de-CH')+' '+d.toLocaleTimeString('de-CH',{hour:'2-digit',minute:'2-digit'});}
+function renderBackupStatus(){let meta=backupMeta(); if(typeof backupLastText!=='undefined'){backupLastText.textContent=formatDateTime(meta.lastBackup); backupStatusText.textContent=meta.lastAction?meta.lastAction:'Bitte nach Änderungen sichern.';}}
+function markBackup(action){localStorage.setItem('backup_meta_v1',JSON.stringify({lastBackup:new Date().toISOString(),lastAction:action||'Daten gesichert.'}));renderBackupStatus();}
+
+function currentBackupData(){return {version:'final-2026',created:new Date().toISOString(),year:+year.value,services,assignments,changes,settings};}
+function exportBackup(){
+  saveSettings(); saveServices(); saveAssignments(); saveChanges();
+  let data=currentBackupData();
+  let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  let a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='MG_Dienstplan_'+(+year.value)+'_Daten.json';
+  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(a.href);
+  markBackup('Sicherung erstellt. Datei bitte in iCloud Drive / Busland Martin Gerber speichern.');
+}
+
+function exportHtmlForGithub(){
+  saveSettings(); saveServices(); saveAssignments(); saveChanges();
+  let html='<!doctype html>\n'+document.documentElement.outerHTML;
+  const newBuild='build-'+new Date().toISOString().replace(/[:.]/g,'-');
+  html=html.replace(/const APP_BUILD_ID = '[^']*';/, "const APP_BUILD_ID = '"+newBuild+"';");
+  html=html.replace(/const DEFAULT_SERVICES = [\s\S]*?;\nconst DEFAULT_ASSIGNMENTS_2026 =/, 'const DEFAULT_SERVICES = '+JSON.stringify(services)+';\nconst DEFAULT_ASSIGNMENTS_2026 =');
+  html=html.replace(/const DEFAULT_ASSIGNMENTS_2026 = [\s\S]*?;\nconst SPECIAL_TYPES =/, 'const DEFAULT_ASSIGNMENTS_2026 = '+JSON.stringify(assignments)+';\nconst SPECIAL_TYPES =');
+  html=html.replace(/const DEFAULT_CHANGES = [\s\S]*?;\nconst DEFAULT_SETTINGS =/, 'const DEFAULT_CHANGES = '+JSON.stringify(changes)+';\nconst DEFAULT_SETTINGS =');
+  html=html.replace(/const DEFAULT_SETTINGS = [\s\S]*?;\n\/\/ DATA_END/, 'const DEFAULT_SETTINGS = '+JSON.stringify(settings)+';\n// DATA_END');
+  let blob=new Blob([html],{type:'text/html'});
+  let a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='index.html';
+  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(a.href);
+  markBackup('index.html erstellt. Diese Datei auf GitHub hochladen.');
+  alert('Die Datei index.html wurde erstellt. Lade genau diese Datei auf GitHub hoch.');
+}
+function importBackup(ev){
+  let file=ev.target.files&&ev.target.files[0]; if(!file)return;
+  let reader=new FileReader();
+  reader.onload=function(){
+    try{
+      let data=JSON.parse(reader.result);
+      if(!data || !data.services || !data.assignments){alert('Diese Sicherungsdatei ist nicht gültig.');return;}
+      if(!confirm('Sicherung laden? Aktuelle gespeicherte Daten werden überschrieben.'))return;
+      services=data.services; assignments=data.assignments; changes=data.changes||{}; settings=data.settings||settings;
+      localStorage.setItem('services_v2',JSON.stringify(services));
+      localStorage.setItem('assignments_v2',JSON.stringify(assignments));
+      localStorage.setItem('changes_v1',JSON.stringify(changes));
+      localStorage.setItem('settings_v2',JSON.stringify(settings));
+      pensum.value=settings.pensum||80; satRate.value=settings.satRate||6; sunRate.value=settings.sunRate||14; earlyRate.value=settings.earlyRate||7; lateRate.value=settings.lateRate||7;
+      renderAll(); markBackup('Sicherung geladen: '+(file.name||'JSON-Datei')); alert('Sicherung wurde geladen.');
+    }catch(e){alert('Sicherung konnte nicht gelesen werden: '+e.message);}
+    ev.target.value='';
+  };
+  reader.readAsText(file);
+}
+function printYearReport(){
+  document.body.classList.remove('print-month');
+  document.title='ÖV Dienstplan Jahresbericht '+(+year.value);
+  window.print();
+}
+function printMonthReport(){
+  document.body.classList.add('print-month');
+  document.title='ÖV Dienstplan '+monthNames[+month.value]+' '+(+year.value);
+  window.print();
+  setTimeout(()=>document.body.classList.remove('print-month'),500);
+}
+
+function renderAll(){saveSettings();renderServices();renderCalendar();renderSummary();renderMonthTable();renderYearChecks();renderAZGChecker();renderMonthOverview();renderChangeSummary();renderProgressChart();renderBackupStatus()}
+function copyPreviousMonth(){let y=+year.value,m=+month.value;if(m==0){alert('Im Januar gibt es keinen Vormonat im gleichen Jahr.');return}let prevDays=new Date(y,m,0).getDate(), days=new Date(y,m+1,0).getDate();for(let d=1;d<=Math.min(prevDays,days);d++){let p=`${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`, c=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`; if(assignments[p]) assignments[c]=assignments[p];}saveAssignments();renderAll()}
+function resetAll(){if(!confirm('Alle gespeicherten Dienste, Einstellungen und Kalendereinträge zurücksetzen?'))return;localStorage.removeItem('services_v2');localStorage.removeItem('assignments_v2');localStorage.removeItem('settings_v2');localStorage.removeItem('changes_v1');location.reload()}
+init();
+</script>
+
+<footer>Premium App-Version 2026 · Martin Gerber · PC-Bearbeitung / iPhone-Nachschauen · Persönliche Arbeitszeit-, Dienst-, Spesen- und AZG-Auswertung</footer>
+</body>
+</html>
